@@ -110,10 +110,6 @@ int countSalary(struct Employee employee[], int num_employees) {
         }
     }
 
-    printf("%d\n", emp.salary);
-    printf("%d\n", emp.overtime_fee);
-    printf("%d\n", overtime_hours);
-
     int total_salary = emp.salary + (emp.overtime_fee * overtime_hours);
 
     printf("Total Gaji Bulan Ini : Rp.%d", total_salary);
