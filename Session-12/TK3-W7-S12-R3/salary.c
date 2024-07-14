@@ -37,10 +37,7 @@ int main() {
             }
         } else {
             program = 0;
-            return;
         }
-        printf("\nKetik 0 untuk kembali\n");
-        scanf("%d", &menu);
     }
 
     return 0;
@@ -51,27 +48,33 @@ struct Employee createEmployee() {
 
     printf("NIP: ");
     scanf("%d", &employee.nip);
-    
-    printf("Nama: ");
-    scanf("%49s", employee.name);
-    
-    printf("Alamat: ");
-    scanf("%299s", employee.address);
-    
-    printf("No HP: ");
-    scanf("%14s", employee.phone_number);
-    
-    printf("Jabatan: ");
-    scanf("%49s", employee.position);
-    
-    printf("Golongan: ");
-    scanf("%2s", employee.golongan);
+    getchar(); // Mengkonsumsi newline character setelah scanf
 
-    if (strcmp(employee.golongan, "D1")) {
+    printf("Nama: ");
+    fgets(employee.name, sizeof(employee.name), stdin);
+    employee.name[strcspn(employee.name, "\n")] = '\0'; // Menghapus newline character
+
+    printf("Alamat: ");
+    fgets(employee.address, sizeof(employee.address), stdin);
+    employee.address[strcspn(employee.address, "\n")] = '\0'; // Menghapus newline character
+
+    printf("No HP: ");
+    fgets(employee.phone_number, sizeof(employee.phone_number), stdin);
+    employee.phone_number[strcspn(employee.phone_number, "\n")] = '\0'; // Menghapus newline character
+
+    printf("Jabatan: ");
+    fgets(employee.position, sizeof(employee.position), stdin);
+    employee.position[strcspn(employee.position, "\n")] = '\0'; // Menghapus newline character
+
+    printf("Golongan: ");
+    fgets(employee.golongan, sizeof(employee.golongan), stdin);
+    employee.golongan[strcspn(employee.golongan, "\n")] = '\0'; // Menghapus newline character
+
+    if (strcmp(employee.golongan, "D1") == 0) {
         employee.salary = 2500000;
-    } else if (strcmp(employee.golongan, "D2")) {
+    } else if (strcmp(employee.golongan, "D2") == 0) {
         employee.salary = 2000000;
-    } else if (strcmp(employee.golongan, "D3")) {
+    } else if (strcmp(employee.golongan, "D3") == 0) {
         employee.salary = 1500000;
     } else {
         employee.salary = 0;
@@ -84,34 +87,42 @@ struct Employee createEmployee() {
 int countSalary(struct Employee employee[], int num_employees) {
     struct Employee emp;
     int overtime_hours;
+    int found = 0;
 
     printf("NIP: ");
     scanf("%d", &emp.nip);
+    getchar(); // Mengkonsumsi newline character setelah scanf
 
     printf("Golongan: ");
-    scanf("%s", emp.golongan);
+    fgets(emp.golongan, sizeof(emp.golongan), stdin);
+    emp.golongan[strcspn(emp.golongan, "\n")] = '\0'; // Menghapus newline character
 
     printf("Jam Lembur: ");
     scanf("%d", &overtime_hours);
 
-
     for (int i = 0; i < num_employees; i++) {
         if (emp.nip == employee[i].nip) {
             emp = employee[i];
-            if (strcmp(employee[i].golongan, "D1")) {
-                emp.overtime_fee = 1000;
-            } else if (strcmp(employee[i].golongan, "D2")) {
+            found = 1;
+            if (strcmp(employee[i].golongan, "D1") == 0) {
+                emp.overtime_fee = 10000;
+            } else if (strcmp(employee[i].golongan, "D2") == 0) {
                 emp.overtime_fee = 5000;
-            } else if (strcmp(employee[i].golongan, "D3")) {
+            } else if (strcmp(employee[i].golongan, "D3") == 0) {
                 emp.overtime_fee = 2500;
+            } else {
+                emp.overtime_fee = 0;
             }
-        } else {
-            return 1;
+            break; // keluar loop setelah menemukan karyawan
         }
+    }
+
+    if (!found) {
+        return 1;
     }
 
     int total_salary = emp.salary + (emp.overtime_fee * overtime_hours);
 
-    printf("Total Gaji Bulan Ini : Rp.%d", total_salary);
+    printf("Total Gaji Bulan Ini : Rp.%d\n", total_salary);
     return 0;
 }
